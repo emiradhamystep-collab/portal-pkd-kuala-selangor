@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Portal muat turun dokumen PKD Kuala Selangor">
+<meta name="theme-color" content="#075e3b">
+<title>Portal Muat Turun | PKD Kuala Selangor</title>
+<style>
+  :root {
+    --hijau: #075e3b;
+    --hijau-gelap: #04412a;
+    --hijau-cair: #e6f2ec;
+    --garis: #dbe3df;
+    --teks: #1d2b25;
+    --kelabu: #5b6b64;
+    --latar: #f5f8f6;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; color: var(--teks); background: var(--latar); line-height: 1.5; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+  [hidden] { display: none !important; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+  /* Navigasi */
+  header { background: #fff; border-bottom: 1px solid var(--garis); position: sticky; top: 0; z-index: 10; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; padding-bottom: 12px; gap: 16px; position: relative; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand strong { display: block; font-size: .95rem; line-height: 1.2; }
+  .brand small { color: var(--kelabu); font-size: .8rem; }
+  .mark { background: var(--hijau); color: #fff; font-weight: 700; padding: 10px 11px; border-radius: 8px; font-size: .85rem; }
+  nav { display: flex; gap: 6px; }
+  nav a { padding: 8px 14px; border-radius: 6px; font-size: .92rem; color: var(--kelabu); }
+  nav a:hover { background: var(--hijau-cair); color: var(--hijau); }
+  .menu { display: none; background: none; border: 1px solid var(--garis); border-radius: 6px; font-size: 1.3rem; padding: 4px 12px; }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, var(--hijau), var(--hijau-gelap)); color: #fff; padding: 56px 0; }
+  .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 36px; align-items: center; }
+  .eyebrow { font-size: .75rem; letter-spacing: .12em; font-weight: 700; opacity: .8; margin-bottom: 8px; }
+  .hero h1 { font-size: 2.6rem; line-height: 1.15; margin: 0 0 14px; }
+  .hero h1 span { color: #9fe0bf; }
+  .hero p { margin: 0 0 22px; opacity: .92; max-width: 480px; }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 11px 20px; border-radius: 8px; font-weight: 600; font-size: .95rem; }
+  .btn-light { background: #fff; color: var(--hijau); }
+  .btn-line { border: 1px solid rgba(255,255,255,.6); color: #fff; }
+  .feature { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 14px; padding: 24px; }
+  .feature-icon { font-size: 1.8rem; margin-bottom: 6px; }
+  .feature h2 { font-size: 1.2rem; margin: 0 0 8px; }
+  .feature p { font-size: .9rem; margin-bottom: 16px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .stats > div { background: rgba(255,255,255,.12); border-radius: 8px; padding: 10px; text-align: center; }
+  .stats strong { display: block; font-size: 1.3rem; }
+  .stats small { font-size: .7rem; opacity: .85; }
+
+  /* Carian */
+  .search-wrap { margin-top: -26px; position: relative; z-index: 2; }
+  .search { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--garis); border-radius: 12px; padding: 8px 12px; box-shadow: 0 6px 20px rgba(0,0,0,.08); }
+  .glass { font-size: 1.3rem; color: var(--kelabu); }
+  .search input { flex: 1; border: 0; outline: 0; font-size: 1rem; padding: 8px 0; background: transparent; }
+  .search button { background: var(--hijau-cair); color: var(--hijau); border: 0; border-radius: 6px; padding: 8px 14px; font-weight: 600; }
+
+  /* Seksyen */
+  .content { padding: 48px 0 8px; }
+  .heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+  .heading .eyebrow { color: var(--hijau); opacity: 1; }
+  .heading h2 { margin: 0; font-size: 1.7rem; }
+  .heading p { margin: 0; color: var(--kelabu); }
+
+  .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .cat { text-align: left; background: #fff; border: 1px solid var(--garis); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 2px; transition: .15s; }
+  .cat:hover, .cat.selected { border-color: var(--hijau); box-shadow: 0 4px 14px rgba(7,94,59,.15); }
+  .cat.selected { background: var(--hijau-cair); }
+  .cat-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--hijau); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .8rem; margin-bottom: 8px; }
+  .cat strong { font-size: 1rem; }
+  .cat small { color: var(--kelabu); }
+  .arrow { margin-top: 8px; color: var(--hijau); font-size: .82rem; font-weight: 600; }
+
+  /* Senarai dokumen */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .filter { background: #fff; border: 1px solid var(--garis); border-radius: 999px; padding: 7px 16px; font-size: .88rem; color: var(--kelabu); }
+  .filter.active { background: var(--hijau); border-color: var(--hijau); color: #fff; }
+  .doc-list { display: grid; gap: 10px; }
+  .doc { display: flex; justify-content: space-between; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--garis); border-radius: 10px; padding: 12px 16px; }
+  .doc-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .doc-left strong { display: block; font-size: .95rem; }
+  .doc-left small { color: var(--kelabu); }
+  .pdf-icon { min-width: 52px; text-align: center; background: #c0392b; color: #fff; font-weight: 700; font-size: .72rem; padding: 10px 6px; border-radius: 8px; }
+  .pdf-icon.DOCX, .pdf-icon.DOC { background: #2b579a; }
+  .pdf-icon.XLSX, .pdf-icon.XLS { background: #1e7145; }
+  .download { background: var(--hijau); color: #fff; padding: 9px 16px; border-radius: 8px; font-weight: 600; font-size: .88rem; white-space: nowrap; }
+  .download:hover { background: var(--hijau-gelap); }
+  .empty { text-align: center; padding: 28px; color: var(--kelabu); background: #fff; border: 1px dashed var(--garis); border-radius: 10px; }
+
+  /* Makluman */
+  .notice { display: flex; gap: 14px; background: #fff8e6; border: 1px solid #f0d78c; border-radius: 12px; padding: 18px; }
+  .notice-icon { width: 32px; height: 32px; border-radius: 50%; background: #e0a800; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+  .notice h3 { margin: 0 0 4px; }
+  .notice p { margin: 0; color: var(--kelabu); }
+
+  /* Hubungi */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; padding-bottom: 32px; }
+  .contact-grid .eyebrow { color: var(--hijau); opacity: 1; }
+  .contact-grid h2 { margin: 0 0 10px; font-size: 1.6rem; }
+  .contact-grid p { color: var(--kelabu); margin: 0; }
+  .contact-card { background: #fff; border: 1px solid var(--garis); border-radius: 12px; }
+  .contact-row { padding: 14px 18px; border-bottom: 1px solid var(--garis); }
+  .contact-row:last-child { border-bottom: 0; }
+  .contact-row small { display: block; color: var(--kelabu); font-size: .78rem; }
+
+  footer { background: var(--hijau-gelap); color: #fff; padding: 22px 0; margin-top: 24px; }
+  .footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .footer small { display: block; opacity: .8; }
+
+  @media (max-width: 860px) {
+    .hero-grid, .contact-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2rem; }
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .menu { display: block; }
+    nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; border-bottom: 1px solid var(--garis); flex-direction: column; padding: 8px 20px 14px; }
+    nav.open { display: flex; }
+    .doc { flex-direction: column; align-items: stretch; }
+    .download { text-align: center; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#utama"><span class="mark">PKD</span><span><strong>Pejabat Kesihatan Daerah</strong><small>Kuala Selangor</small></span></a>
+    <button class="menu" id="menuBtn" aria-label="Buka menu">☰</button>
+    <nav id="nav"><a href="#utama">Utama</a><a href="#kategori">Kategori</a><a href="#dokumen">Dokumen</a><a href="#makluman">Makluman</a><a href="#hubungi">Hubungi</a></nav>
+  </div>
+</header>
+<main>
+  <section class="hero" id="utama">
+    <div class="wrap hero-grid">
+      <div><div class="eyebrow">PORTAL DOKUMEN & MUAT TURUN</div><h1>Semua dokumen.<br><span>Satu portal.</span></h1><p>Akses borang dan dokumen Pejabat Kesihatan Daerah Kuala Selangor dengan lebih mudah, pantas dan tersusun.</p><div class="actions"><a class="btn btn-light" href="#dokumen">Teroka dokumen&nbsp; →</a><a class="btn btn-line" href="#kategori">Lihat kategori</a></div></div>
+      <aside class="feature"><div class="feature-icon">▤</div><div class="eyebrow">PUSAT DOKUMEN</div><h2>Direka untuk urusan harian yang lebih lancar.</h2><p>Gunakan carian atau pilih kategori untuk mencari borang yang diperlukan.</p><div class="stats"><div><strong id="totalDocs">8</strong><small>Dokumen contoh</small></div><div><strong>05</strong><small>Kategori</small></div><div><strong>24/7</strong><small>Akses web</small></div></div></aside>
+    </div>
+  </section>
+  <div class="wrap search-wrap"><div class="search"><span class="glass">⌕</span><input id="searchInput" type="search" placeholder="Cari nama dokumen atau kod..." aria-label="Cari dokumen"><button id="clearBtn">Padam</button></div></div>
+  <section class="content" id="kategori"><div class="wrap"><div class="heading"><div><div class="eyebrow">CARI MENGIKUT KATEGORI</div><h2>Dokumen lebih tersusun</h2></div><p>Pilih kategori untuk menapis senarai dokumen di bawah.</p></div>
+    <div class="cards">
+      <button class="cat" data-cat="KEW-PA"><span class="cat-icon">A</span><strong>KEW-PA</strong><small>Aset & inventori</small><span class="arrow">Lihat dokumen →</span></button>
+      <button class="cat" data-cat="KEWANGAN"><span class="cat-icon">RM</span><strong>Kewangan</strong><small>Borang kewangan</small><span class="arrow">Lihat dokumen →</span></button>
+      <button class="cat" data-cat="SUMBER MANUSIA"><span class="cat-icon">SDM</span><strong>Sumber Manusia</strong><small>Urusan kakitangan</small><span class="arrow">Lihat dokumen →</span></button>
+      <button class="cat" data-cat="PENTADBIRAN"><span class="cat-icon">P</span><strong>Pentadbiran</strong><small>Dokumen pentadbiran</small><span class="arrow">Lihat dokumen →</span></button>
+      <button class="cat" data-cat="ICT"><span class="cat-icon">IT</span><strong>ICT</strong><small>Teknologi & sistem</small><span class="arrow">Lihat dokumen →</span></button>
+    </div>
+  </div></section>
+  <section class="content docs-section" id="dokumen"><div class="wrap"><div class="heading"><div><div class="eyebrow">PUSAT MUAT TURUN</div><h2>Senarai dokumen</h2></div><p id="resultCount">8 dokumen contoh</p></div>
+    <div class="filters"><button class="filter active" data-filter="ALL">Semua</button><button class="filter" data-filter="KEW-PA">KEW-PA</button><button class="filter" data-filter="KEWANGAN">Kewangan</button><button class="filter" data-filter="SUMBER MANUSIA">Sumber Manusia</button><button class="filter" data-filter="PENTADBIRAN">Pentadbiran</button><button class="filter" data-filter="ICT">ICT</button></div>
+    <div class="doc-list" id="docList"></div><div class="empty" id="empty" hidden>Tiada dokumen ditemui. Cuba kata kunci lain.</div>
+  </div></section>
+  <section class="content" id="makluman"><div class="wrap"><div class="notice"><div class="notice-icon">!</div><div><h3>Makluman penting</h3><p>Senarai ini ialah contoh templat. Gantikan dokumen contoh dengan borang rasmi yang diluluskan sebelum menerbitkan portal.</p></div></div></div></section>
+  <section class="content" id="hubungi"><div class="wrap contact-grid"><div><div class="eyebrow">HUBUNGI KAMI</div><h2>Pejabat Kesihatan Daerah Kuala Selangor</h2><p>Untuk pertanyaan berkaitan dokumen atau akses portal, sila hubungi unit yang bertanggungjawab.</p></div><div class="contact-card"><div class="contact-row"><small>Telefon</small><strong>03-3289 3454 / 03-3289 3455</strong></div><div class="contact-row"><small>Emel</small><strong>pkdkualaselangor@moh.gov.my</strong></div><div class="contact-row"><small>Waktu urusan</small><strong>Isnin – Jumaat</strong></div></div></div></section>
+</main>
+<footer><div class="wrap footer"><div><strong>PKD Kuala Selangor</strong><small>Portal Muat Turun Dokumen</small></div><small>© <span id="year"></span> · Portal dokumen</small></div></footer>
+<script>
+/*
+  CARA TAMBAH DOKUMEN:
+  Tambah satu baris dalam senarai di bawah.
+  - file: laluan fail dalam repo GitHub (PDF, DOCX atau XLSX)
+  - cat : mesti salah satu daripada KEW-PA, KEWANGAN, SUMBER MANUSIA, PENTADBIRAN, ICT
+*/
+const docs = [
+ {code:"KEW.PA-1",name:"Borang Penerimaan Aset",cat:"KEW-PA",file:"documents/kewpa/kewpa-1.pdf"},
+ {code:"KEW.PA-2",name:"Borang Penolakan Aset",cat:"KEW-PA",file:"documents/kewpa/kewpa-2.pdf"},
+ {code:"KEW.PA-3",name:"Daftar Harta Modal",cat:"KEW-PA",file:"documents/kewpa/kewpa-3.pdf"},
+ {code:"KEW.PA-4",name:"Daftar Aset Alih Bernilai Rendah",cat:"KEW-PA",file:"documents/kewpa/kewpa-4.pdf"},
+ {code:"KW-01",name:"Borang Tuntutan Perjalanan (contoh)",cat:"KEWANGAN",file:"documents/kewangan/kw-01.pdf"},
+ {code:"SM-01",name:"Borang Maklumat Kakitangan (contoh)",cat:"SUMBER MANUSIA",file:"documents/sumber-manusia/sm-01.pdf"},
+ {code:"PT-01",name:"Borang Permohonan Dokumen (contoh)",cat:"PENTADBIRAN",file:"documents/pentadbiran/pt-01.pdf"},
+ {code:"ICT-01",name:"Borang Permohonan ICT (contoh)",cat:"ICT",file:"documents/ict/ict-01.pdf"}
+];
+let activeCat = "ALL";
+const list = document.getElementById("docList");
+const search = document.getElementById("searchInput");
+function render(){
+ const q=search.value.trim().toLowerCase();
+ const filtered=docs.filter(d=>(activeCat==="ALL"||d.cat===activeCat)&&(`${d.code} ${d.name} ${d.cat}`).toLowerCase().includes(q));
+ list.innerHTML=filtered.map(d=>{
+  const ext=d.file.split(".").pop().toUpperCase();
+  const namaFail=d.file.split("/").pop();
+  return `<article class="doc"><div class="doc-left"><div class="pdf-icon ${ext}">${ext}</div><div><strong>${d.code} · ${d.name}</strong><small>${d.cat} · Fail ${ext}</small></div></div><a class="download" href="${d.file}" download="${namaFail}">Muat turun ↓</a></article>`;
+ }).join("");
+ document.getElementById("empty").hidden=filtered.length>0;
+ document.getElementById("resultCount").textContent=`${filtered.length} dokumen dipaparkan`;
+}
+document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{activeCat=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("selected",x.dataset.cat===activeCat));render();}));
+document.querySelectorAll("[data-cat]").forEach(b=>b.addEventListener("click",()=>{activeCat=b.dataset.cat;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter===activeCat));document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("selected",x===b));render();document.getElementById("dokumen").scrollIntoView({behavior:"smooth"});}));
+search.addEventListener("input",render);
+document.getElementById("clearBtn").addEventListener("click",()=>{search.value="";activeCat="ALL";document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter==="ALL"));document.querySelectorAll(".cat").forEach(x=>x.classList.remove("selected"));render();search.focus();});
+document.getElementById("menuBtn").addEventListener("click",()=>document.getElementById("nav").classList.toggle("open"));
+document.querySelectorAll("#nav a").forEach(a=>a.addEventListener("click",()=>document.getElementById("nav").classList.remove("open")));
+document.getElementById("totalDocs").textContent=docs.length;
+document.getElementById("year").textContent=new Date().getFullYear();
+render();
+</script>
+</body>
+</html>
