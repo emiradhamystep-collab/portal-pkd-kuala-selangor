@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muat Turun Borang | Portal PKD Kuala Selangor</title>
+<style>
+  :root {
+    --utama: #0b5394;
+    --garis: #d9dee5;
+    --latar: #f4f6f9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--latar);
+    color: #1f2933;
+  }
+  header {
+    background: var(--utama);
+    color: #fff;
+    padding: 18px 24px;
+  }
+  header h1 { margin: 0; font-size: 1.15rem; }
+  main {
+    max-width: 960px;
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+  h2 { margin: 0 0 4px; font-size: 1.4rem; }
+  .sub { margin: 0 0 16px; color: #52606d; font-size: .9rem; }
+  .cari {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    border: 1px solid var(--garis);
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  .kotak {
+    background: #fff;
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--garis); }
+  th { background: #e8eef5; font-size: .85rem; text-transform: uppercase; letter-spacing: .03em; }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #f7fafd; }
+  td.bil, th.bil { width: 56px; text-align: center; }
+  td.kod { font-weight: 600; white-space: nowrap; }
+  td.muat, th.muat { width: 110px; text-align: center; }
+  .btn {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: .8rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+  }
+  .btn.word { background: #2b579a; }
+  .btn.pdf  { background: #c0392b; }
+  .btn.xls  { background: #1e7145; }
+  .btn:hover { opacity: .85; }
+  .kosong { display: none; padding: 16px; text-align: center; color: #52606d; }
+  footer { text-align: center; padding: 20px; color: #52606d; font-size: .8rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Portal PKD Kuala Selangor</h1>
+</header>
+
+<main>
+  <h2>Borang Muat Turun</h2>
+  <p class="sub">Klik butang di hujung baris untuk memuat turun dokumen.</p>
+
+  <input class="cari" id="cari" type="search" placeholder="Cari nama borang atau kod...">
+
+  <div class="kotak">
+    <table id="jadual">
+      <thead>
+        <tr>
+          <th class="bil">Bil</th>
+          <th>Nama Dokumen</th>
+          <th>Kod</th>
+          <th class="muat">Muat Turun</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--
+          CARA TAMBAH BARIS BARU:
+          1. Salin satu blok <tr> ... </tr> di bawah.
+          2. Tukar nama dokumen, kod dan pautan fail.
+          3. Letak fail sebenar dalam folder "fail/" di repo GitHub.
+          Untuk PDF guna class "btn pdf" dan teks PDF.
+          Untuk Excel guna class "btn xls" dan teks EXCEL.
+        -->
+        <tr>
+          <td class="bil">1</td>
+          <td>Contoh Borang Pertama</td>
+          <td class="kod">BORANG 1</td>
+          <td class="muat"><a class="btn word" href="fail/borang-1.docx" download>WORD</a></td>
+        </tr>
+        <tr>
+          <td class="bil">2</td>
+          <td>Contoh Borang Kedua</td>
+          <td class="kod">BORANG 2</td>
+          <td class="muat"><a class="btn pdf" href="fail/borang-2.pdf" download>PDF</a></td>
+        </tr>
+        <tr>
+          <td class="bil">3</td>
+          <td>Contoh Senarai Semak</td>
+          <td class="kod">BORANG 3</td>
+          <td class="muat"><a class="btn xls" href="fail/borang-3.xlsx" download>EXCEL</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="kosong" id="kosong">Tiada dokumen dijumpai.</div>
+  </div>
+</main>
+
+<footer>Kemaskini terakhir: <span id="tarikh"></span></footer>
+
+<script>
+  // Carian pantas
+  var kotakCari = document.getElementById('cari');
+  var baris = document.querySelectorAll('#jadual tbody tr');
+  var kosong = document.getElementById('kosong');
+
+  kotakCari.addEventListener('input', function () {
+    var kata = kotakCari.value.toLowerCase();
+    var nampak = 0;
+    baris.forEach(function (b) {
+      var padan = b.textContent.toLowerCase().indexOf(kata) !== -1;
+      b.style.display = padan ? '' : 'none';
+      if (padan) nampak++;
+    });
+    kosong.style.display = nampak === 0 ? 'block' : 'none';
+  });
+
+  // Tarikh kemaskini (tarikh halaman dibuka)
+  document.getElementById('tarikh').textContent =
+    new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' });
+</script>
+
+</body>
+</html>
