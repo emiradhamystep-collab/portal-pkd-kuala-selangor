@@ -70,7 +70,7 @@
   .heading h2 { margin: 0; font-size: 1.7rem; }
   .heading p { margin: 0; color: var(--kelabu); }
 
-  .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
   .cat { text-align: left; background: #fff; border: 1px solid var(--garis); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 2px; transition: .15s; }
   .cat:hover, .cat.selected { border-color: var(--hijau); box-shadow: 0 4px 14px rgba(7,94,59,.15); }
   .cat.selected { background: var(--hijau-cair); }
@@ -91,6 +91,7 @@
   .pdf-icon { min-width: 52px; text-align: center; background: #c0392b; color: #fff; font-weight: 700; font-size: .72rem; padding: 10px 6px; border-radius: 8px; }
   .pdf-icon.DOCX, .pdf-icon.DOC { background: #2b579a; }
   .pdf-icon.XLSX, .pdf-icon.XLS { background: #1e7145; }
+  .pdf-icon.FOLDER { background: #e0a800; }
   .download { background: var(--hijau); color: #fff; padding: 9px 16px; border-radius: 8px; font-weight: 600; font-size: .88rem; white-space: nowrap; }
   .download:hover { background: var(--hijau-gelap); }
   .empty { text-align: center; padding: 28px; color: var(--kelabu); background: #fff; border: 1px dashed var(--garis); border-radius: 10px; }
@@ -139,21 +140,15 @@
   <section class="hero" id="utama">
     <div class="wrap hero-grid">
       <div><div class="eyebrow">PORTAL DOKUMEN & MUAT TURUN</div><h1>Semua dokumen.<br><span>Satu portal.</span></h1><p>Akses borang dan dokumen Pejabat Kesihatan Daerah Kuala Selangor dengan lebih mudah, pantas dan tersusun.</p><div class="actions"><a class="btn btn-light" href="#dokumen">Teroka dokumen&nbsp; →</a><a class="btn btn-line" href="#kategori">Lihat kategori</a></div></div>
-      <aside class="feature"><div class="feature-icon">▤</div><div class="eyebrow">PUSAT DOKUMEN</div><h2>Direka untuk urusan harian yang lebih lancar.</h2><p>Gunakan carian atau pilih kategori untuk mencari borang yang diperlukan.</p><div class="stats"><div><strong id="totalDocs">8</strong><small>Dokumen contoh</small></div><div><strong>05</strong><small>Kategori</small></div><div><strong>24/7</strong><small>Akses web</small></div></div></aside>
+      <aside class="feature"><div class="feature-icon">▤</div><div class="eyebrow">PUSAT DOKUMEN</div><h2>Direka untuk urusan harian yang lebih lancar.</h2><p>Gunakan carian atau pilih kategori untuk mencari borang yang diperlukan.</p><div class="stats"><div><strong id="totalDocs">0</strong><small>Dokumen</small></div><div><strong id="totalCats">0</strong><small>Kategori</small></div><div><strong>24/7</strong><small>Akses web</small></div></div></aside>
     </div>
   </section>
   <div class="wrap search-wrap"><div class="search"><span class="glass">⌕</span><input id="searchInput" type="search" placeholder="Cari nama dokumen atau kod..." aria-label="Cari dokumen"><button id="clearBtn">Padam</button></div></div>
   <section class="content" id="kategori"><div class="wrap"><div class="heading"><div><div class="eyebrow">CARI MENGIKUT KATEGORI</div><h2>Dokumen lebih tersusun</h2></div><p>Pilih kategori untuk menapis senarai dokumen di bawah.</p></div>
-    <div class="cards">
-      <button class="cat" data-cat="KEW-PA"><span class="cat-icon">A</span><strong>KEW-PA</strong><small>Aset & inventori</small><span class="arrow">Lihat dokumen →</span></button>
-      <button class="cat" data-cat="KEWANGAN"><span class="cat-icon">RM</span><strong>Kewangan</strong><small>Borang kewangan</small><span class="arrow">Lihat dokumen →</span></button>
-      <button class="cat" data-cat="SUMBER MANUSIA"><span class="cat-icon">SDM</span><strong>Sumber Manusia</strong><small>Urusan kakitangan</small><span class="arrow">Lihat dokumen →</span></button>
-      <button class="cat" data-cat="PENTADBIRAN"><span class="cat-icon">P</span><strong>Pentadbiran</strong><small>Dokumen pentadbiran</small><span class="arrow">Lihat dokumen →</span></button>
-      <button class="cat" data-cat="ICT"><span class="cat-icon">IT</span><strong>ICT</strong><small>Teknologi & sistem</small><span class="arrow">Lihat dokumen →</span></button>
-    </div>
+    <div class="cards" id="cards"></div>
   </div></section>
-  <section class="content docs-section" id="dokumen"><div class="wrap"><div class="heading"><div><div class="eyebrow">PUSAT MUAT TURUN</div><h2>Senarai dokumen</h2></div><p id="resultCount">8 dokumen contoh</p></div>
-    <div class="filters"><button class="filter active" data-filter="ALL">Semua</button><button class="filter" data-filter="KEW-PA">KEW-PA</button><button class="filter" data-filter="KEWANGAN">Kewangan</button><button class="filter" data-filter="SUMBER MANUSIA">Sumber Manusia</button><button class="filter" data-filter="PENTADBIRAN">Pentadbiran</button><button class="filter" data-filter="ICT">ICT</button></div>
+  <section class="content docs-section" id="dokumen"><div class="wrap"><div class="heading"><div><div class="eyebrow">PUSAT MUAT TURUN</div><h2>Senarai dokumen</h2></div><p id="resultCount">0 dokumen</p></div>
+    <div class="filters" id="filters"></div>
     <div class="doc-list" id="docList"></div><div class="empty" id="empty" hidden>Tiada dokumen ditemui. Cuba kata kunci lain.</div>
   </div></section>
   <section class="content" id="makluman"><div class="wrap"><div class="notice"><div class="notice-icon">!</div><div><h3>Makluman penting</h3><p>Senarai ini ialah contoh templat. Gantikan dokumen contoh dengan borang rasmi yang diluluskan sebelum menerbitkan portal.</p></div></div></div></section>
@@ -175,11 +170,7 @@ const docs = [
  {code:"",name:"MAKMAL",cat:"MAKMAL",file:"https://drive.google.com/drive/folders/1AhFsTSPiPJRxguAXMvgBka3MAAysFi01?usp=drive_link"},
  {code:"",name:"TERAPI CARA KERJA",cat:"TERAPI CARA KERJA",file:"https://drive.google.com/drive/folders/1-myIWzWkqzROkP3QPhArIhVuypoe6C25?usp=drive_link"},
  {code:"",name:"FISIOTERAPI",cat:"FISIOTERAPI",file:"https://drive.google.com/drive/folders/1NVTCwhPWphhGZVTloP7i680gWlx_LRFD?usp=drive_link"},
- {code:"",name:"INSPEKTORAT",cat:"INSPEKTORAT",file:"https://drive.google.com/drive/folders/1TYdi_TjYwMdL3tqjzoQtqsfmsZwvQ7IT?usp=drive_link"},
- {code:"",name:"NAMA 15",cat:"NAMA 15",file:"PAUTAN_FOLDER_15"},
- {code:"",name:"NAMA 16",cat:"NAMA 16",file:"PAUTAN_FOLDER_16"},
- {code:"",name:"NAMA 17",cat:"NAMA 17",file:"PAUTAN_FOLDER_17"},
- {code:"",name:"NAMA 18",cat:"NAMA 18",file:"PAUTAN_FOLDER_18"}
+ {code:"",name:"INSPEKTORAT",cat:"INSPEKTORAT",file:"https://drive.google.com/drive/folders/1TYdi_TjYwMdL3tqjzoQtqsfmsZwvQ7IT?usp=drive_link"}
 ];
 let activeCat = "ALL";
 const list = document.getElementById("docList");
