@@ -161,27 +161,21 @@
 </main>
 <footer><div class="wrap footer"><div><strong>PKD Kuala Selangor</strong><small>Portal Muat Turun Dokumen</small></div><small>© <span id="year"></span> · Portal dokumen</small></div></footer>
 <script>
-/*
-  CARA TAMBAH DOKUMEN:
-  Tambah satu baris dalam senarai di bawah.
-  - file: laluan fail dalam repo GitHub (PDF, DOCX atau XLSX)
-  - cat : mesti salah satu daripada KEW-PA, KEWANGAN, SUMBER MANUSIA, PENTADBIRAN, ICT
-*/
+<script>
 const docs = [
- {code:"KEW.PA-1",name:"PENTADBIRAN",cat:"Google Drive PENTADBIRAN",file:"https://drive.google.com/drive/folders/1Uz0LLjT6GfucdxwNoAk2F7Hm13J2Upi-?usp=drive_link"},
- {code:"KEW.PA-2",name:"KEWANGAN",cat:"Google Drive KEWANGAN",file:"https://drive.google.com/drive/folders/1wj_Y0DkvyDOxD4ACiydF73Va8zC1SJZV?usp=drive_link"},
+ {code:"KEW.PA-1",name:"PENTADBIRAN",cat:"KEW-PA",file:"https://drive.google.com/drive/folders/1Uz0LLjT6GfucdxwNoAk2F7Hm13J2Upi-?usp=drive_link"},
+ {code:"KEW.PA-2",name:"KEWANGAN",cat:"KEW-PA",file:"https://drive.google.com/drive/folders/1wj_Y0DkvyDOxD4ACiydF73Va8zC1SJZV?usp=drive_link"},
  {code:"KEW.PA-3",name:"Daftar Harta Modal",cat:"KEW-PA",file:"documents/kewpa/kewpa-3.pdf"},
  {code:"KEW.PA-4",name:"Daftar Aset Alih Bernilai Rendah",cat:"KEW-PA",file:"documents/kewpa/kewpa-4.pdf"},
  {code:"KW-01",name:"Borang Tuntutan Perjalanan (contoh)",cat:"KEWANGAN",file:"documents/kewangan/kw-01.pdf"},
  {code:"SM-01",name:"Borang Maklumat Kakitangan (contoh)",cat:"SUMBER MANUSIA",file:"documents/sumber-manusia/sm-01.pdf"},
  {code:"PT-01",name:"Borang Permohonan Dokumen (contoh)",cat:"PENTADBIRAN",file:"documents/pentadbiran/pt-01.pdf"},
  {code:"ICT-01",name:"Borang Permohonan ICT (contoh)",cat:"ICT",file:"documents/ict/ict-01.pdf"}
-  
 ];
 let activeCat = "ALL";
 const list = document.getElementById("docList");
 const search = document.getElementById("searchInput");
-function render(){function render(){
+function render(){
  const q=search.value.trim().toLowerCase();
  const filtered=docs.filter(d=>(activeCat==="ALL"||d.cat===activeCat)&&(`${d.code} ${d.name} ${d.cat}`).toLowerCase().includes(q));
  list.innerHTML=filtered.map(d=>{
@@ -199,6 +193,15 @@ function render(){function render(){
  document.getElementById("empty").hidden=filtered.length>0;
  document.getElementById("resultCount").textContent=`${filtered.length} dokumen dipaparkan`;
 }
+document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{activeCat=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("selected",x.dataset.cat===activeCat));render();}));
+document.querySelectorAll("[data-cat]").forEach(b=>b.addEventListener("click",()=>{activeCat=b.dataset.cat;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter===activeCat));document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("selected",x===b));render();document.getElementById("dokumen").scrollIntoView({behavior:"smooth"});}));
+search.addEventListener("input",render);
+document.getElementById("clearBtn").addEventListener("click",()=>{search.value="";activeCat="ALL";document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter==="ALL"));document.querySelectorAll(".cat").forEach(x=>x.classList.remove("selected"));render();search.focus();});
+document.getElementById("menuBtn").addEventListener("click",()=>document.getElementById("nav").classList.toggle("open"));
+document.querySelectorAll("#nav a").forEach(a=>a.addEventListener("click",()=>document.getElementById("nav").classList.remove("open")));
+document.getElementById("totalDocs").textContent=docs.length;
+document.getElementById("year").textContent=new Date().getFullYear();
+render();
 </script>
 </body>
 </html>
