@@ -161,20 +161,49 @@
 </main>
 <footer><div class="wrap footer"><div><strong>PKD Kuala Selangor</strong><small>Portal Muat Turun Dokumen</small></div><small>© <span id="year"></span> · Portal dokumen</small></div></footer>
 <script>
-
+<script>
 const docs = [
- {code:"Google Drive",name:"PENTADBIRAN",cat:"PENTADBIRAN",file:"https://drive.google.com/drive/folders/1Uz0LLjT6GfucdxwNoAk2F7Hm13J2Upi-?usp=drive_link"},
- {code:"Google Drive",name:"KEWANGAN",cat:"KEWANGAN",file:"https://drive.google.com/drive/folders/1wj_Y0DkvyDOxD4ACiydF73Va8zC1SJZV?usp=drive_link"},
- {code:"Google Drive",name:"PEROLEHAN",cat:"PEROLEHAN",file:"https://drive.google.com/drive/folders/1_us-aiEu5JgKwM9oyk-b-hwOIAFSSH5M?usp=drive_link"},
- {code:"Google Drive",name:"DUNIT  MCH",cat:"UNIT  MCH",file:"https://drive.google.com/drive/folders/12QIb0vK3Qs7m775dIK6iBHfeV98GqfzW?usp=drive_link"},
- {code:"Google Drive",name:"UNIT PRIMER",cat:"UNIT PRIMER",file:"https://drive.google.com/drive/folders/1-x7E9MPJVQnL6pynyF-9hzBsUb1EfTCV?usp=drive_link"},
- {code:"Google Drive",name:"KUALITI ISO",cat:"KUALITI ISO",file:"https://drive.google.com/drive/folders/1Puou3tJqaTjJ8Y5a3Lcvh_KscOtHwnkH?usp=drive_link"},
- {code:"Google Drive",name:"UKS",cat:"UKS",file:"documents/pentadbiran/pt-01.pdf"},
- {code:"Google Drive",name:"RADIOLOGI",cat:"RADIOLOGI",file:"https://drive.google.com/drive/folders/10Hqx-S9rmjbSl8jDTdPl3f6V1rv6jW6i?usp=drive_link"}
+ {code:"",name:"PENTADBIRAN",cat:"PENTADBIRAN",file:"https://drive.google.com/drive/folders/1Uz0LLjT6GfucdxwNoAk2F7Hm13J2Upi-?usp=drive_link"},
+ {code:"",name:"KEWANGAN",cat:"KEWANGAN",file:"https://drive.google.com/drive/folders/1wj_Y0DkvyDOxD4ACiydF73Va8zC1SJZV?usp=drive_link"},
+ {code:"",name:"PEROLEHAN",cat:"PEROLEHAN",file:"https://drive.google.com/drive/folders/1_us-aiEu5JgKwM9oyk-b-hwOIAFSSH5M?usp=drive_link"},
+ {code:"",name:"UNIT MCH",cat:"UNIT MCH",file:"https://drive.google.com/drive/folders/12QIb0vK3Qs7m775dIK6iBHfeV98GqfzW?usp=drive_link"},
+ {code:"",name:"UNIT PRIMER",cat:"UNIT PRIMER",file:"https://drive.google.com/drive/folders/1-x7E9MPJVQnL6pynyF-9hzBsUb1EfTCV?usp=drive_link"},
+ {code:"",name:"KUALITI ISO",cat:"KUALITI ISO",file:"https://drive.google.com/drive/folders/1Puou3tJqaTjJ8Y5a3Lcvh_KscOtHwnkH?usp=drive_link"},
+ {code:"",name:"UKS",cat:"UKS",file:"documents/pentadbiran/pt-01.pdf"},
+ {code:"",name:"RADIOLOGI",cat:"RADIOLOGI",file:"https://drive.google.com/drive/folders/10Hqx-S9rmjbSl8jDTdPl3f6V1rv6jW6i?usp=drive_link"},
+ {code:"",name:"NAMA 9",cat:"NAMA 9",file:"PAUTAN_FOLDER_9"},
+ {code:"",name:"NAMA 10",cat:"NAMA 10",file:"PAUTAN_FOLDER_10"},
+ {code:"",name:"NAMA 11",cat:"NAMA 11",file:"PAUTAN_FOLDER_11"},
+ {code:"",name:"NAMA 12",cat:"NAMA 12",file:"PAUTAN_FOLDER_12"},
+ {code:"",name:"NAMA 13",cat:"NAMA 13",file:"PAUTAN_FOLDER_13"},
+ {code:"",name:"NAMA 14",cat:"NAMA 14",file:"PAUTAN_FOLDER_14"},
+ {code:"",name:"NAMA 15",cat:"NAMA 15",file:"PAUTAN_FOLDER_15"},
+ {code:"",name:"NAMA 16",cat:"NAMA 16",file:"PAUTAN_FOLDER_16"},
+ {code:"",name:"NAMA 17",cat:"NAMA 17",file:"PAUTAN_FOLDER_17"},
+ {code:"",name:"NAMA 18",cat:"NAMA 18",file:"PAUTAN_FOLDER_18"}
 ];
 let activeCat = "ALL";
 const list = document.getElementById("docList");
 const search = document.getElementById("searchInput");
+const cardsEl = document.getElementById("cards");
+const filtersEl = document.getElementById("filters");
+const cats = [...new Set(docs.map(d=>d.cat))];
+
+function buildCats(){
+ const icon=c=>c.split(/\s+/).map(w=>w[0]).join("").slice(0,3).toUpperCase();
+ cardsEl.innerHTML=cats.map(c=>{
+  const n=docs.filter(d=>d.cat===c).length;
+  return `<button class="cat" data-cat="${c}"><span class="cat-icon">${icon(c)}</span><strong>${c}</strong><small>${n} dokumen</small><span class="arrow">Lihat dokumen →</span></button>`;
+ }).join("");
+ filtersEl.innerHTML=`<button class="filter active" data-filter="ALL">Semua</button>`+cats.map(c=>`<button class="filter" data-filter="${c}">${c}</button>`).join("");
+ document.getElementById("totalCats").textContent=cats.length;
+}
+function setCat(c){
+ activeCat=c;
+ document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter===c));
+ document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("selected",x.dataset.cat===c));
+ render();
+}
 function render(){
  const q=search.value.trim().toLowerCase();
  const filtered=docs.filter(d=>(activeCat==="ALL"||d.cat===activeCat)&&(`${d.code} ${d.name} ${d.cat}`).toLowerCase().includes(q));
@@ -188,20 +217,23 @@ function render(){
   const label=isFolder?"Buka folder →":"Muat turun ↓";
   const jenis=isFolder?"Folder Google Drive":`Fail ${ext}`;
   const attrs=isFolder?` target="_blank" rel="noopener"`:(isDrive?"":` download="${d.file.split("/").pop()}"`);
-  return `<article class="doc"><div class="doc-left"><div class="pdf-icon ${ext}">${ext}</div><div><strong>${d.code} · ${d.name}</strong><small>${d.cat} · ${jenis}</small></div></div><a class="download" href="${href}"${attrs}>${label}</a></article>`;
+  const tajuk=(d.code?d.code+" · ":"")+d.name;
+  return `<article class="doc"><div class="doc-left"><div class="pdf-icon ${ext}">${ext}</div><div><strong>${tajuk}</strong><small>${d.cat} · ${jenis}</small></div></div><a class="download" href="${href}"${attrs}>${label}</a></article>`;
  }).join("");
  document.getElementById("empty").hidden=filtered.length>0;
  document.getElementById("resultCount").textContent=`${filtered.length} dokumen dipaparkan`;
 }
-document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{activeCat=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("selected",x.dataset.cat===activeCat));render();}));
-document.querySelectorAll("[data-cat]").forEach(b=>b.addEventListener("click",()=>{activeCat=b.dataset.cat;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter===activeCat));document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("selected",x===b));render();document.getElementById("dokumen").scrollIntoView({behavior:"smooth"});}));
+filtersEl.addEventListener("click",e=>{const b=e.target.closest("[data-filter]");if(b)setCat(b.dataset.filter);});
+cardsEl.addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(b){setCat(b.dataset.cat);document.getElementById("dokumen").scrollIntoView({behavior:"smooth"});}});
 search.addEventListener("input",render);
-document.getElementById("clearBtn").addEventListener("click",()=>{search.value="";activeCat="ALL";document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter==="ALL"));document.querySelectorAll(".cat").forEach(x=>x.classList.remove("selected"));render();search.focus();});
+document.getElementById("clearBtn").addEventListener("click",()=>{search.value="";setCat("ALL");search.focus();});
 document.getElementById("menuBtn").addEventListener("click",()=>document.getElementById("nav").classList.toggle("open"));
 document.querySelectorAll("#nav a").forEach(a=>a.addEventListener("click",()=>document.getElementById("nav").classList.remove("open")));
 document.getElementById("totalDocs").textContent=docs.length;
 document.getElementById("year").textContent=new Date().getFullYear();
+buildCats();
 render();
+</script>
 </script>
 </body>
 </html>
