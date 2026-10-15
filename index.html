@@ -181,26 +181,24 @@ const docs = [
 let activeCat = "ALL";
 const list = document.getElementById("docList");
 const search = document.getElementById("searchInput");
-function render(){
+function render(){function render(){
  const q=search.value.trim().toLowerCase();
  const filtered=docs.filter(d=>(activeCat==="ALL"||d.cat===activeCat)&&(`${d.code} ${d.name} ${d.cat}`).toLowerCase().includes(q));
  list.innerHTML=filtered.map(d=>{
-  const ext=d.file.split(".").pop().toUpperCase();
-  const namaFail=d.file.split("/").pop();
-  return `<article class="doc"><div class="doc-left"><div class="pdf-icon ${ext}">${ext}</div><div><strong>${d.code} · ${d.name}</strong><small>${d.cat} · Fail ${ext}</small></div></div><a class="download" href="${d.file}" download="${namaFail}">Muat turun ↓</a></article>`;
+  const isDrive=d.file.includes("drive.google.com");
+  const isFolder=d.file.includes("/drive/folders/");
+  const m=d.file.match(/\/d\/([^\/?#]+)/);
+  let href=d.file;
+  if(isDrive&&m&&!isFolder){href=`https://drive.google.com/uc?export=download&id=${m[1]}`;}
+  const ext=(isFolder?"FOLDER":(d.type||(isDrive?"PDF":d.file.split(".").pop()))).toUpperCase();
+  const label=isFolder?"Buka folder →":"Muat turun ↓";
+  const jenis=isFolder?"Folder Google Drive":`Fail ${ext}`;
+  const attrs=isFolder?` target="_blank" rel="noopener"`:(isDrive?"":` download="${d.file.split("/").pop()}"`);
+  return `<article class="doc"><div class="doc-left"><div class="pdf-icon ${ext}">${ext}</div><div><strong>${d.code} · ${d.name}</strong><small>${d.cat} · ${jenis}</small></div></div><a class="download" href="${href}"${attrs}>${label}</a></article>`;
  }).join("");
  document.getElementById("empty").hidden=filtered.length>0;
  document.getElementById("resultCount").textContent=`${filtered.length} dokumen dipaparkan`;
-}
-document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{activeCat=b.dataset.filter;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("selected",x.dataset.cat===activeCat));render();}));
-document.querySelectorAll("[data-cat]").forEach(b=>b.addEventListener("click",()=>{activeCat=b.dataset.cat;document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter===activeCat));document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("selected",x===b));render();document.getElementById("dokumen").scrollIntoView({behavior:"smooth"});}));
-search.addEventListener("input",render);
-document.getElementById("clearBtn").addEventListener("click",()=>{search.value="";activeCat="ALL";document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter==="ALL"));document.querySelectorAll(".cat").forEach(x=>x.classList.remove("selected"));render();search.focus();});
-document.getElementById("menuBtn").addEventListener("click",()=>document.getElementById("nav").classList.toggle("open"));
-document.querySelectorAll("#nav a").forEach(a=>a.addEventListener("click",()=>document.getElementById("nav").classList.remove("open")));
-document.getElementById("totalDocs").textContent=docs.length;
-document.getElementById("year").textContent=new Date().getFullYear();
-render();
+}();
 </script>
 </body>
 </html>
